@@ -9,20 +9,20 @@ The following is Contents.
 - [Homebrew](#homebrew)
 - [Nginx, PHP, and MySQL](#nginx-php-and-mysql)
 - [DNS and Port Forwarding](#dns-and-port-forwarding)
+- [Final](#final)
 
 ## Greate IDE and Apps
 There are many greate IDE and Apps  avalibe on Mac OS X.  
 
-- IDE: TextMate, Sublime Text 2/3, Atom
-- Browser: Chrome, Firefox, Safari
-- Terminal: iTerm2
-- Window Management: Spectacle.app
-- Password Mangement : 1Password
-- Cloud Storage: Dropbox, OneDrive, Google Drive 
-- GIF Record: LICEcap.app
-- Keyboard Remap: Karabiner.app
+- IDE: [TextMate](http://macromates.com), [Sublime Text 2/3](http://www.sublimetext.com), [Atom](https://atom.io)
+- Browser: [Chrome](https://google.com/chrome), [Firefox](https://www.firefox.com), [Safari](https://www.apple.com/safari)
+- Terminal: [iTerm2](https://www.iterm2.com)
+- Window Management: [Spectacle](https://www.spectacleapp.com)
+- Password Mangement : [1Password](https://agilebits.com/onepassword)
+- Cloud Storage: [Dropbox](https://www.dropbox.com), [OneDrive](https://onedrive.live.com), [Google Drive](https://google.com/drive)
 - Others: 
-	- KeepingYouAwake.app: Keep your mac awake.
+	- Keep your mac awake: [KeepingYouAwake](https://github.com/newmarcel/KeepingYouAwake): 	- GIF Record: [LICEcap](http://www.cockos.com/licecap/)
+	- Keyboard Remap: [Karabiner](https://pqrs.org/osx/karabiner/)
 
 ## Xcode or Command Line Tools
 If you are a Mac/iOS developer, you have to install Xcode. If not you just install Command Line Tools.
@@ -68,12 +68,17 @@ brew install git
 ```
 
 ## Nginx, PHP, and MySQL
+
+### Nginx
 I prefer to using Nginx as web server, because it's simple enough.
 
 ```
 brew install nginx
 ```
+
+### PHP
 Homebrew pre-built PHP-curl is using system-wild curl library, but it cause some problem, so that use brew version `curl` and `openssl` is a good option.
+
 
 ```
 brew install curl --with-openssl
@@ -92,44 +97,23 @@ brew install php56  --with-homebrew-libxml2  --with-homebrew-curl  --with-pear
 ```
 If you have other php module need to install, just `brew search php-*` and install it.
 
+### MySQL/PostgreSQL
 MySQL/PostgreSQL is very good partner for PHP/Django/Rails 
 
 ```
 brew install mysql postgresql
 ```
-
-Homebrew Service can manage every service you install and control by `launchctl`
+### Homebrew Services
+[Homebrew Services](https://github.com/Homebrew/homebrew-services) can manage every service you install and control by `launchctl`
 
 ```
 brew tap homebrew/services
 ```
-So that you can start mysql by `brew services start mysql` 
+So that you can:
 
-## DNS and Firewall
-In developing environment, you'd better config a .dev domain which point to localhost and simply address to different project by name. e.g. `foo.dev -> ~/workspace/foo` and `bar.dev  -> ~/workspace/bar`. So that we can access it directly in browser.
-
-### dev domain and DNS resolver
-`dnsmasq` is powerful dns cache and easy to config.
-
-```
-brew install dnsmasq
-```
-Start dnsmasq by Homebrew Services `brew services start dnsmasq`
-
-Edit `/usr/local/etc/dnsmasq.conf` with following lines.
-
-```
-address=/.dev/127.0.0.1
-listen-address=127.0.0.1
-port=35353
-```
-Make a directory `sudo mkdir /etc/resolver` and put a file named `dev` which content is:
-
-```
-nameserver 127.0.0.1
-port 35353
-```
-Check it works fine or not by `ping foobar.dev`
+- start mysql by `brew services start mysql` 
+- restart php-fpm by `brew services restart php56`
+- stop Nginx by `brew services stop Nginx`
 
 ### Configure Nginx 
 Only root user able to LISTEN 1000-under port, Nginx is install by user and started by user, so that can't listen 80 port, but we don't want open link with port like http://foo.dev:8080, so we have to setup port forwarding. Here is steps.
@@ -153,7 +137,7 @@ server {
     }
     location ~ \.php$ {
         root    /Users/USERNAME/workspace/www/$file_path/public;
-        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_pass   127.0.0.1:9000; # PHP-FPM default running on this port.
         fastcgi_index  index.php;
         include        fastcgi_params;
         fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -161,6 +145,34 @@ server {
 }
 ```
 This configuration will point `foobar.dev` to `/Users/USERNAME/workspace/www/foobar/public` and put route to `index.php`, most PHP framework routing like this.
+
+
+## DNS and Port Forwarding
+In developing environment, you'd better config a .dev domain which point to localhost and simply address to different project by name. e.g. `foo.dev -> ~/workspace/foo` and `bar.dev  -> ~/workspace/bar`. So that we can access it directly in browser.
+
+
+### dev domain and DNS resolver
+`dnsmasq` is powerful dns cache and easy to config.
+
+```
+brew install dnsmasq
+```
+Start dnsmasq by Homebrew Services `brew services start dnsmasq`
+
+Edit `/usr/local/etc/dnsmasq.conf` with following lines.
+
+```
+address=/.dev/127.0.0.1
+listen-address=127.0.0.1
+port=35353
+```
+Make a directory `sudo mkdir /etc/resolver` and put a file named `dev` which content is:
+
+```
+nameserver 127.0.0.1
+port 35353
+```
+Check it works fine or not by `ping foobar.dev`
 
 ### Configure Port Forwarding 
 Since Yosemite(10.10), `ipfw` is replaced by `pf`. Here is how to do port forwarding with `pf`
@@ -201,5 +213,8 @@ Check `pf.conf` by `sudo pfctl -ef /etc/pf.conf`
 ```
 sudo defaults write /System/Library/LaunchDaemons/com.apple.pfctl ProgramArguments '(pfctl, -f, /etc/pf.conf, -e)'
 ```
+## Final
+
+Don't forget to turn on SIP.
 
 
