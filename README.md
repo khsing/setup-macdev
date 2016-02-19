@@ -20,8 +20,10 @@ There are many greate IDE and Apps  avalibe on Mac OS X.
 - Window Management: [Spectacle](https://www.spectacleapp.com)
 - Password Mangement : [1Password](https://agilebits.com/onepassword)
 - Cloud Storage: [Dropbox](https://www.dropbox.com), [OneDrive](https://onedrive.live.com), [Google Drive](https://google.com/drive)
+- Shells: [Zsh](http://www.zsh.org/) with [Oh My Zsh](http://ohmyz.sh)
 - Others: 
-	- Keep your mac awake: [KeepingYouAwake](https://github.com/newmarcel/KeepingYouAwake): 	- GIF Record: [LICEcap](http://www.cockos.com/licecap/)
+	- Keep your mac awake: [KeepingYouAwake](https://github.com/newmarcel/KeepingYouAwake): 	-
+	- GIF Record: [LICEcap](http://www.cockos.com/licecap/)
 	- Keyboard Remap: [Karabiner](https://pqrs.org/osx/karabiner/)
 
 ## Xcode or Command Line Tools
