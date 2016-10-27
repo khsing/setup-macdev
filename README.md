@@ -25,6 +25,18 @@ There are many greate IDE and Apps  avalibe on Mac OS X.
 	- Keep your mac awake: [KeepingYouAwake](https://github.com/newmarcel/KeepingYouAwake): 	-
 	- GIF Record: [LICEcap](http://www.cockos.com/licecap/)
 	- Keyboard Remap: [Karabiner](https://pqrs.org/osx/karabiner/)
+	- MySQL/PostgreSQL GUI Client: [Sequel Pro](http://sequelpro.com), [PSequel](http://www.psequel.com)
+	- [ImageOptim](https://imageoptim.com) 
+
+- Extensions
+	- [Emmet](http://emmet.io/) 
+	- DocBlockr: [Sublime Text](https://packagecontrol.io/packages/DocBlockr), [Atom](https://atom.io/packages/docblockr)
+	- For Chrome
+		- [Don't Track me Google](https://chrome.google.com/webstore/detail/dont-track-me-google/gdbofhhdmcladcmmfjolgndfkpobecpg)
+	- For Safari
+		- [JSONview](https://github.com/acrogenesis/jsonview-safari)
+		- [ClickToPlugin](https://hoyois.github.io/safariextensions/clicktoplugin/)
+		- [Fontface Ninja](http://www.fontface.ninja)
 
 ## Xcode or Command Line Tools
 If you are a Mac/iOS developer, you have to install Xcode. If not you just install Command Line Tools.
@@ -118,9 +130,12 @@ So that you can:
 - stop Nginx by `brew services stop Nginx`
 
 ### Configure Nginx 
+
 Only root user able to LISTEN 1000-under port, Nginx is install by user and started by user, so that can't listen 80 port, but we don't want open link with port like http://foo.dev:8080, so we have to setup port forwarding. Here is steps.
 
-- Nginx: `/usr/local/etc/nginx.conf`
+- Nginx: `/usr/local/etc/nginx/servers/dev.conf`
+
+*** DO NOT forget to replace USERNAME with yours. ***
 
 ```
 server {
@@ -148,6 +163,11 @@ server {
 ```
 This configuration will point `foobar.dev` to `/Users/USERNAME/workspace/www/foobar/public` and put route to `index.php`, most PHP framework routing like this.
 
+And then restart Nginx with following command.
+
+```
+brew services restart nginx
+```
 
 ## DNS and Port Forwarding
 In developing environment, you'd better config a .dev domain which point to localhost and simply address to different project by name. e.g. `foo.dev -> ~/workspace/foo` and `bar.dev  -> ~/workspace/bar`. So that we can access it directly in browser.
@@ -190,23 +210,19 @@ NOTICE: Last line of this file MUST be blank line.
 Test this anchor file:
 
 ```
-sudo pfctl -vnf /etc/pf.anchors/com.papercut
+sudo pfctl -vnf /etc/pf.anchors/com.cutedge
 ```
 Check pf status:
 
 ```
 sudo pfctl -s nat 
 ```
-- Append this anchor file into `/etc/pf.conf`
+Modify `/etc/pf.conf` 
 
-```
-rdr-anchor "devport"
-dummynet-anchor "com.apple/*"
-anchor "com.apple/*"
-load anchor "com.apple" from "/etc/pf.anchors/com.apple"
-load anchor "devport" from "/etc/pf.anchors/dev.cutedge"
-```
-Keep last line is blank.
+- Append line `rdr-anchor "devport"` after line `anchor "com.apple/*"`
+- Append line `load anchor "devport" from "/etc/pf.anchors/dev.cutedge"` after `load anchor "com.apple" from "/etc/pf.anchors/com.apple"`
+
+And keep last line is blank.
 
 Check `pf.conf` by `sudo pfctl -ef /etc/pf.conf`
 
@@ -215,7 +231,11 @@ Check `pf.conf` by `sudo pfctl -ef /etc/pf.conf`
 ```
 sudo defaults write /System/Library/LaunchDaemons/com.apple.pfctl ProgramArguments '(pfctl, -f, /etc/pf.conf, -e)'
 ```
+This need SIP is disabled.
+
 ## Final
+
+OK, Right now, we have setup local PHP developing environment. Let enjoy it.
 
 Don't forget to turn on SIP.
 
