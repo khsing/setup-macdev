@@ -219,7 +219,7 @@ sudo pfctl -s nat
 ```
 Modify `/etc/pf.conf` 
 
-- Append line `rdr-anchor "devport"` after line `anchor "com.apple/*"`
+- Append line `rdr-anchor "devport"` after line `rdr-anchor "com.apple/*"`
 - Append line `load anchor "devport" from "/etc/pf.anchors/dev.cutedge"` after `load anchor "com.apple" from "/etc/pf.anchors/com.apple"`
 
 And keep last line is blank.
