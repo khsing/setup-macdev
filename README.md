@@ -210,7 +210,7 @@ NOTICE: Last line of this file MUST be blank line.
 Test this anchor file:
 
 ```
-sudo pfctl -vnf /etc/pf.anchors/com.cutedge
+sudo pfctl -vnf /etc/pf.anchors/dev.cutedge
 ```
 Check pf status:
 
