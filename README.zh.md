@@ -104,10 +104,10 @@ PHP7.0已经发布了，不过一些项目都还在PHP5.x上，所以就安装PH
 ```
 brew tap homebrew/php
 ```
-然后安装配备Homebrew版本libxml2和curl的`php56`.
+然后安装配备Homebrew版本libxml2和curl的`php71`.
 
 ```
-brew install php56  --with-homebrew-libxml2  --with-homebrew-curl  --with-pear
+brew install php71  --with-homebrew-libxml2  --with-homebrew-curl  --with-pear
 ```
 如果你有需要安装的PHP模块，搜索并安装就好了，不过要注意版本 `brew search php-*`。
 
